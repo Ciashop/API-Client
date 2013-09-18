@@ -11,7 +11,7 @@ Ciashop
 Faça o download do código fonte e acrescente ao projeto da sua solução.
 
 ##Ciashop API Authorization
-Para compreender melhor o API Client da Ciashop e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores).
+Para compreender melhor o API Client da Ciashop e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores/apis).
 
 ###Ciashop APIAuthorizer
 Abaixo está a classe que deve estar no seu projeto e realiza a autorização do seu app.
@@ -83,4 +83,60 @@ APIAuthorizer authorizer = new APIAuthorizer(ConfigurationManager.AppSettings["c
     }
 ```    
  
+##Uso do API Client
+Para conseguir utilizar o API Client da Ciashop é preciso conhecer a nossa documentação: [API](http://wiki.ciashop.com.br/desenvolvedores/apis). Projetamos a classe APIClient de forma a facilitar as chamadas de URLs da API e o formato de envio dos dados. 
+Após utilizar a classe APIAuthorizer e obter a autorização, já poderá realizar as chamadas dos outros métodos da API.
+
+###Usando a classe APIClient
+Get de todos os departamentos.
+  
+```csharp
+  APIClient api = new APIClient(authState);
+
+    // by default JSON string is returned
+    object data = api.Get("/admin/products.json");
+
+    // use your favorite JSON library to decode the string into a C# object
+```
+Cadastrar um Departamento.
+```csharp   
+    APIClient api = new APIClient(authState);
+
+    // Manually construct a JSON string or in some other way
+    // Ugly
+    string dataToUpdate = 
+        "{" +
+            "\"product\": {" +
+                "\"title\": \"Burton Custom Freestlye 151\"," +
+                "\"body_html\": \"<strong>Good snowboard!</strong>\"" +
+            "}" +
+        "}";
+
+    string createProductResponse = api.Post("/admin/products.json");
+```
+Atualizar um Departamento.
+```csharp   
+    // pass the supplied JSON Data Translator
+    var api = new APIClient(authState, new JsonDataTranslator());
+
+    // use dynamics to create the object
+    // a lot nicer that the previous way
+    dynamic newProduct = new
+    { 
+        products = new { 
+            title       = "Burton Custom Freestlye 151", 
+            body_html   = "<strong>Good snowboard!</strong>"
+        } 
+    };
+    dynamic createProductResponse = api.Post("/admin/products.json", newProduct);
+
+```
+Deletar um Departamento.
+```csharp   
+    // id of the product you wish to delete
+    int id = 123;
+    var api = new APIClient(authState, new JsonDataTranslator());
+    api.Delete(String.Format("/admin/products/{0}.json", id));
+```
+
 
