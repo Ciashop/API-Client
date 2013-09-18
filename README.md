@@ -11,7 +11,7 @@ Ciashop
 Faça o download do código fonte e acrescente ao projeto da sua solução.
 
 ##Ciashop API Authorization
-Para compreender melhor o API Client da Ciashop e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso Wiki.
+Para compreender melhor o API Client da Ciashop e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores).
 
 ###Ciashop APIAuthorizer
 Abaixo está a classe que deve estar no seu projeto e realiza a autorização do seu app.
