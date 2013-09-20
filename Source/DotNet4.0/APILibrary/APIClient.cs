@@ -99,8 +99,7 @@ namespace APILibrary
             request.Method = method.ToString();
 
             request.ContentType = "application/json";
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("Authorization", "Basic Bearer:" + this.State.AccessToken);
+            request.Headers.Add("Authorization", "Bearer " + this.State.AccessToken);
 
             using (var writer = new StreamWriter(request.GetRequestStream()))
             {

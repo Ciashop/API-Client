@@ -11,31 +11,31 @@ namespace ApiLibraryTest
     {
         #region Ctor Tests
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void Ctor_Do_Not_Accept_Empty_clientId()
+        public void Constructor_must_not_accept_empty_clientid()
         {
             new APIAuthorizer("", "key", new Uri("https://mystore.com/manager"));
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void Ctor_Do_Not_Accept_Empty_secretKey()
+        public void Constructor_must_not_accept_empty_Secretkey()
         {
             new APIAuthorizer("client", "", new Uri("https://mystore.com/manager"));
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void Ctor_Do_Not_Accept_Null_storeUrl()
+        public void Constructor_must_not_accept_null_Secretkey()
         {
             new APIAuthorizer("client", "key", null);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void Ctor_Do_Not_Accept_Unsafe_storeUrl()
+        public void Constructor_must_not_accept_unsafe_storeurl()
         {
             new APIAuthorizer("client", "key", new Uri("http://mystore.com/manager"));
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentException))]
-        public void Ctor_Do_Not_Accept_Path_Without_Manager_storeUrl()
+        public void Constructor_must_not_accept_storeurl_without_manager_path()
         {
             new APIAuthorizer("client", "key", new Uri("http://mystore.com"));
         }
@@ -43,7 +43,7 @@ namespace ApiLibraryTest
 
         #region GetAuthorizationUrl Tests
         [TestMethod]
-        public void GetAuthorizationUrl_Must_Return_Url_With_Scope()
+        public void GetAuthorizationUrl_must_return_url_with_scope_when_called_with_valid_scope()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/manager"));
 
@@ -52,7 +52,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetAuthorizationUrl_Must_Return_Url_Whitout_Scope()
+        public void GetAuthorizationUrl_must_return_url_without_scope_when_called_without_scope_()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/manager"));
 
@@ -60,7 +60,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetAuthorizationUrl_Should_Not_Duplicate_Slash_When_StoreUrl_Has_Slash()
+        public void GetAuthorizationUrl_must_return_url_without_additional_slash_when_storeurl_ends_with_slash()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/manager/"));
 
@@ -70,7 +70,7 @@ namespace ApiLibraryTest
 
         #region AuthorizationState Tests
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void AuthorizationState_Must_Not_Accept_Empty_Code()
+        public void AuthorizationState_must_not_accept_empty_code()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/manager"));
 
@@ -78,7 +78,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void AuthorizationState_Must_Defice_Post_Method_and_ContentType()
+        public void AuthorizationState_must_define_post_method_and_content_type()
         {
             var mock = new Mock<HttpHelper>("https://www.mystore.com/manager")
                 .SetupProperty(m => m.HttpWebRequest.Method);
@@ -95,7 +95,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void AuthorizationState_Must_Save_Parameters_on_Body()
+        public void AuthorizationState_must_define_parameters_on_request_body()
         {
             string writedString = string.Empty;
             var mockMS = new Mock<MemoryStream>();
@@ -119,7 +119,7 @@ namespace ApiLibraryTest
 
         #region GetAccessToken
         [TestMethod]
-        public void GetAccessToken_Must_Return_GetAccessToken_As_Defined()
+        public void GetAccessToken_must_return_AcessToken_when_parameters_are_valid()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/mystore/manager"));
             var token = "{" +
@@ -132,7 +132,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetAccessToken_Must_Return_Null_When_Invalid_Parameters()
+        public void GetAccessToken_must_return_AcessToken_null_when_parameters_are_invalid()
         {
             var target = new APIAuthorizer("client", "key", new Uri("https://www.mystore.com/manager"));
 

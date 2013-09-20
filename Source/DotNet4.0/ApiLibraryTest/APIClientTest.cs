@@ -15,7 +15,7 @@ namespace ApiLibraryTest
     {
         #region ExtractQueryString Tests
         [TestMethod]
-        public void ExtractQueryString_Must_Return_Emprt_When_Parameters_Is_Null()
+        public void ExtractQueryString_must_return_empty_when_parameters_are_null()
         {
             APIClient target = new APIClient(new AuthState
             {
@@ -27,7 +27,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void ExtractQueryString_Must_Return_Formatted_String_When_Valid_Parameter()
+        public void ExtractQueryString_must_return_formatted_string_when_parameters_are_valid()
         {
             NameValueCollection param = new NameValueCollection();
             param.Add("attr1", "10");
@@ -45,7 +45,7 @@ namespace ApiLibraryTest
 
         #region Call tests
         [TestMethod]
-        public void Call_With_HttpMethod_Must_Return_Rigth_Method_and_RequestHeaders()
+        public void Call_with_HttpMethod_must_return_used_httpmethod_and_request_headers_correctly()
         {
             var mock = new Mock<HttpHelper>("https://www.mystore.com/api/v1");
             mock.SetupProperty(m => m.HttpWebRequest.Method);
@@ -65,12 +65,11 @@ namespace ApiLibraryTest
             mock.VerifySet(h => h.HttpWebRequest.Method = "GET");
             mock.VerifySet(h => h.HttpWebRequest.ContentType = "application/json");
 
-            Assert.AreEqual(mock.Object.HttpWebRequest.Headers.GetValues("Accept").First().ToString(), "application/json");
-            Assert.AreEqual(mock.Object.HttpWebRequest.Headers.GetValues("Authorization").First().ToString(), "Basic Bearer:token");
+            Assert.AreEqual(mock.Object.HttpWebRequest.Headers.GetValues("Authorization").First().ToString(), "Bearer token");
         }
 
         [TestMethod]
-        public void Call_With_HttpMethod_Post_Must_Write_Contents()
+        public void Call_with_HttpMethod_Post_must_write_content_on_request_body()
         {
             var content =   "{" +
                                 "\"id\": \"1\"," +
@@ -109,7 +108,7 @@ namespace ApiLibraryTest
 
         #region GetResponse tests
         [TestMethod]
-        public void GetResponse_Must_Return_StatusCode_200()
+        public void GetResponse_must_return_StatusCode_200_when_response_is_valid()
         {
             var mock = new Mock<HttpWebResponseWrapper>();
             mock.Setup(m => m.StatusCode).Returns(HttpStatusCode.OK);
@@ -128,7 +127,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetResponse_Must_Return_HasMore_True()
+        public void GetResponse_must_return_hasMore_equals_true_when_response_headers_have_x_hasMore_with_true_value()
         {
             WebHeaderCollection mockHeader = new WebHeaderCollection();
             mockHeader.Add("x-hasmore", "true");
@@ -150,7 +149,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetResponse_Must_Return_ApiLimit_100_and_ApiLimitRemaining_10()
+        public void GetResponse_must_return_apilimit_equals_100_and_apilimitRemaining_equals_10_when_response_headers_have_x_apilimit_remaining_with_value_100_slash_10()
         {
             WebHeaderCollection mockHeader = new WebHeaderCollection();
             mockHeader.Add("x-apilimit-remaining", "100/10");
@@ -173,7 +172,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetResponse_Must_Return_Content_Value_Equals_To_Mock()
+        public void GetResponse_must_return_Content_when_response_is_valid()
         {
             var content =   "{" +
                                 "\"count\": \"1000\" " +
@@ -196,7 +195,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetResponse_Must_Return_Object_Error()
+        public void GetResponse_must_return_error_object_with_404_error_when_response_produce_error_404()
         {
             var content = "{" +
                             "\"responseCode\": \"404\"," +
@@ -232,7 +231,7 @@ namespace ApiLibraryTest
         }
 
         [TestMethod]
-        public void GetResponse_Must_Return_StatusCode_404_When_Response_Return_Error_And_StatusCode_200()
+        public void GetResponse_must_return_StatusCode_404_when_response_content_produce_error_404_and_response_StatusCode_equals_200()
         {
             var content = "{" +
                               "\"responseCode\": \"404\"" +

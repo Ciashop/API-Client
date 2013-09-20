@@ -411,7 +411,14 @@ namespace APILibrary
                 /// <returns></returns>
                 public virtual HttpWebResponseWrapper GetResponse()
                 {
-                        return new HttpWebResponseWrapper((HttpWebResponse)_httpWebRequest.GetResponse());
+                        try
+                        {
+                            return new HttpWebResponseWrapper((HttpWebResponse)_httpWebRequest.GetResponse());
+                        }
+                        catch (WebException ex)
+                        {
+                            return new WebExceptionWrapper(ex).GetResponse();
+                        }
                 }
 
                 /// <summary>
