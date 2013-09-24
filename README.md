@@ -1,64 +1,28 @@
 #API-Client
 ==========
+Este projeto contém uma biblioteca para ajudar desenvolvedores na plataforma .Net criarem aplicações integradas à plataforma de lojas virtuais Ciashop Framework. São cobertos os processos de Autenticação e Acesso aos recursos disponibilizados em nossa API.
+Para compreender melhor o processo de Autenticação e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores/apis).
+Se você é desenvolvedor em outra linguagem ou plataforma, consulte também nosso Wiki para ter informações sobre como utilizar nossa API sem um client.
+
 
 ##Autor
 Ciashop 
 
 ##Requisitos
-* .Net 4.0, a pasta DotNet4.0 contém uma solução usando o Visual Studio 2010.
+* .Net 4.0
+* Visual Studio 2010
+* Chaves(ClientID e SecretKey)fornecidas pela Ciashop
 
 ##Instalação
 Faça o download do código fonte e acrescente ao projeto da sua solução.
 
 ##Ciashop API Authorization
-Para compreender melhor o API Client da Ciashop e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores/apis).
+A API Ciashop utiliza OAuth 2.0 como seu mecanismo de autenticação e a  classe ApiAuthorizer provê os métodos para autenticar sua aplicação.
 
-###Ciashop APIAuthorizer
-Abaixo está a classe que deve estar no seu projeto e realiza a autorização do seu app.
+O processo de autenticação coberto por esta classe está detalhado em nosso [Wiki/Autenticação](http://wiki.ciashop.com.br/desenvolvedores/apis/autenticacao/), em especial os processos identificados pelos itens 1 e 3 do Fluxo de Autenticação.
 
-```csharp
-/// <summary>
-        /// Creates an instance of this class in order to obtain the authorization
-        /// from the customer to make api calls on their behalf
-        /// </summary>
-        /// <param name="clientId">the unique api key of your client</param>
-        /// <param name="secretKey">the unique secret key of your client</param>
-        /// <param name="storeUrl">url of your client store</param>
-        /// <param name="scope">the scopes required for authorization</param>
-        public APIAuthorizer(string clientId, string secretKey, string storeUrl, string scope)
-        {
-
-
-/// <summary>
-        /// Creates an instance of this class in order to obtain the authorization
-        /// from the customer to make api calls on their behalf
-        /// </summary>
-        /// <param name="clientId">the unique api key of your client</param>
-        /// <param name="secretKey">the unique secret key of your client</param>
-        /// <param name="storeUrl">url of your client store</param>
-        /// <param name="scope">the scopes required for authorization</param>
-        public APIAuthorizer(string clientId, string secretKey, string storeUrl, string scope)
-
-
-/// <summary>
-        /// Get the URL required by you to redirect the User to in which they will be
-        /// presented with the ability to grant access to app with the specified scope
-        /// </summary>
-        /// <returns>url to make a a redirect call</returns>
-        public string GetAuthorization()
-
-
-/// <summary>
-        /// After the shop owner has authorized your app, shop will give you a code.
-        /// Use this code to get your authorization state that you will use to make API calls
-        /// </summary>
-        /// <param name="code">a code given to you by shop</param>
-        /// <returns>Authorization state needed by the API client to make API calls</returns>
-        public AuthState AuthorizeClient(string code)
-}
-```
 ###Usando APIAuthorizer
-Abaixo segue um exemplo que mostra como a classe APIAuthorizer deverá ser usada.
+Na primeira fase da autenticação o usuário deve ser redirecionado para a Url de autorização. O método GetAuthorization devolve a Url pronta para o redirect. Descrito no item 1 do [Wiki/Autenticação](http://wiki.ciashop.com.br/desenvolvedores/apis/autenticacao/#iniciando_autenticacao).
 
 ```csharp
 APIAuthorizer authorizer = new APIAuthorizer(ConfigurationManager.AppSettings["clientId"],
@@ -70,73 +34,105 @@ APIAuthorizer authorizer = new APIAuthorizer(ConfigurationManager.AppSettings["c
     // get the Authorization URL and redirect the user
     var authUrl = authorizer. GetAuthorization();
     Redirect(authUrl);
-    // Meanwhile the User is click "yes" to authorize your app for the specified scope. 
-
-    // Once this click, yes or no, they are redirected back to the return URL
-
-    // Handle response callback and recover code value
-    // if developer the APIAuthorizer object so get the authorization state
-    AuthState authState = authorizer.AuthorizeClient(code);
+```    
+Na segunda fase da autenticação, o método  AuthorizeClient deve ser invocado com o Token Temporário devolvido pela loja , descrito no item 2 do [Wiki/Autenticação](http://wiki.ciashop.com.br/desenvolvedores/apis/autenticacao/#token_temporario). Este método cuidará de todo processo para obtenção do Token Definitivo 
+e retornará um objeto AuthState, que será utilizado pelo Client em toda requisição da API.
+```csharp
+AuthState authState = authorizer.AuthorizeClient(code);
     if (authState != null && authState.AccessToken != null)
     {
         // store the auth state in the session or DB to be used for all API calls for the specified shop
     }
-```    
- 
+```
+
 ##Uso do API Client
 Para conseguir utilizar o API Client da Ciashop é preciso conhecer a nossa documentação: [API](http://wiki.ciashop.com.br/desenvolvedores/apis). Projetamos a classe APIClient de forma a facilitar as chamadas de URLs da API e o formato de envio dos dados. 
-Após utilizar a classe APIAuthorizer e obter a autorização, já poderá realizar as chamadas dos outros métodos da API.
+Após utilizar a classe APIAuthorizer e obter a autorização, já poderá realizar as chamadas dos outros recursos disponíveis na API.
+
+Você pode utilizar a classe APIClient para execução dos métodos GET, PUT, POST e DELETE.
 
 ###Usando a classe APIClient
 Get de todos os departamentos.
   
 ```csharp
-  APIClient api = new APIClient(authState);
-
-    // by default JSON string is returned
-    object data = api.Get("/admin/products.json");
-
-    // use your favorite JSON library to decode the string into a C# object
+ //Get all Departments from the API. (.NET 4.0)
+ APIClient objClient = new APIClient(authState);
+ 
+ //This object contains all definition of headers and data content
+ var response = objClient.Get("departments");
+ 
+// the dynamic object will have all the fields just like in the API Docs
+foreach(var product in response.Content)
+{
+	Console.Write(product.title);
+}
 ```
-Cadastrar um Departamento.
+Post de um Departamento.
 ```csharp   
-    APIClient api = new APIClient(authState);
+   //Post Departments. (.NET 4.0)
 
-    // Manually construct a JSON string or in some other way
-    // Ugly
-    string dataToUpdate = 
-        "{" +
-            "\"product\": {" +
-                "\"title\": \"Burton Custom Freestlye 151\"," +
-                "\"body_html\": \"<strong>Good snowboard!</strong>\"" +
-            "}" +
-        "}";
+ APIClient objClient = new APIClient(authState);
+ 
+ dynamic department = new
+						{
+							name = "Department",
+							description = "Description",
+							sortOrder = "1",
+							visible = true
+						};
+						
+var response = objClient.Post("departments", department);
 
-    string createProductResponse = api.Post("/admin/products.json");
+if(response.StatusCode == 200)
+	Console.Write("Success");
 ```
-Atualizar um Departamento.
+Put de um Departamento.
 ```csharp   
-    // pass the supplied JSON Data Translator
-    var api = new APIClient(authState, new JsonDataTranslator());
+   //Put Departments. (.NET 4.0)
 
-    // use dynamics to create the object
-    // a lot nicer that the previous way
-    dynamic newProduct = new
-    { 
-        products = new { 
-            title       = "Burton Custom Freestlye 151", 
-            body_html   = "<strong>Good snowboard!</strong>"
-        } 
-    };
-    dynamic createProductResponse = api.Post("/admin/products.json", newProduct);
+ APIClient objClient = new APIClient(authState);
+ 
+ dynamic department = new
+						{
+							name = "Department",
+							description = "Description",
+							sortOrder = "1",
+							visible = true
+						};
+						
+var response = objClient.Put("departments", department);
 
+if(response.StatusCode == 201)
+	Console.Write("Success");
 ```
-Deletar um Departamento.
+Delete de um Departamento.
 ```csharp   
-    // id of the product you wish to delete
-    int id = 123;
-    var api = new APIClient(authState, new JsonDataTranslator());
-    api.Delete(String.Format("/admin/products/{0}.json", id));
+  //Delete Departments (.NET 4.0)
+
+APIClient objClient = new APIClient(authState);
+
+var response = objClient.Delete("departments/99");
+if(response.StatusCode == 200)
+	Console.Write("Success");
 ```
+Recover Error
+```csharp   
+ APIClient objClient = new APIClient(authState);
 
+var response = objClient.Get("/departments/Test");
 
+if(response.StatusCode != 200 && response.Error.Message)
+	Console.Write("Error description: " + response.Error.Message);
+```
+Usar Headers 
+[Clique aqui](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/#headers) e saiba mais sobre os headers disponiveis.
+```csharp   
+ //Using specific headers(.NET 4.0)
+APIClient objClient = new APIClient(authState);
+
+var response = objClient.Get("/departments");
+
+Console.Write("Have more objects: " + response.HasMore);
+Console.Write("My api call limit: " + response.ApiLimit);
+Console.Write("My api calls limit Remaining: " + response.ApiLimitRemaining);
+```
