@@ -124,8 +124,7 @@ var response = objClient.Get("/departments/Test");
 if(response.StatusCode != 200 && response.Error.Message)
 	Console.Write("Error description: " + response.Error.Message);
 ```
-Usar Headers 
-[Clique aqui](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/#headers) e saiba mais sobre os headers disponiveis.
+Usar [Headers](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/#headers)
 ```csharp   
  //Using specific headers(.NET 4.0)
 APIClient objClient = new APIClient(authState);
