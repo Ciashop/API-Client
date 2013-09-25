@@ -2,7 +2,9 @@
 ==========
 Este projeto contém uma biblioteca para ajudar desenvolvedores na plataforma .Net criarem aplicações integradas à plataforma de lojas virtuais Ciashop Framework. São cobertos os processos de Autenticação e Acesso aos recursos disponibilizados em nossa API.
 Para compreender melhor o processo de Autenticação e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores/apis).
-Atualmente o Client está desenvolvido somente em C#, mas isso não impede que seja consumida por linguagens que sejam compatíveis com Json. Pretendemos desenvolver nosso APICLient em outras linguagens no futuro, caso tenha interesse em traduzi-lo para outras linguagens entre em contato conosco e vincularemos com nossa documentação.
+
+Atualmente o Client está desenvolvido somente em C#, mas isso não impede que seja consumida por linguagens que sejam compatíveis com Json. Pretendemos desenvolver nosso APIClient em outras linguagens no futuro, caso tenha interesse em traduzi-lo entre em contato conosco e vincularemos com nossa documentação.
+
 Se você é desenvolvedor em outra linguagem ou plataforma, consulte também nosso Wiki para ter informações sobre como utilizar nossa API sem um client.
 
 
