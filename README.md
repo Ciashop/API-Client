@@ -118,7 +118,7 @@ var response = objClient.Delete("departments/99");
 if(response.StatusCode == 200)
 	Console.Write("Success");
 ```
-Recuperar  Erros
+Recuperar  Erros.
 Acesse nosso Wiki para visualizar os [Erros Gerais da API](http://wiki.ciashop.com.br/desenvolvedores/apis/erros-gerais-da-api/).
 ```csharp   
  APIClient objClient = new APIClient(authState);
@@ -128,7 +128,7 @@ var response = objClient.Get("/departments/Test");
 if(response.StatusCode != 200 && response.Error.Message)
 	Console.Write("Error description: " + response.Error.Message);
 ```
-Usar Headers
+Usar Headers.
 O Exemplo abaixo utiliza o Header x-apilimit-remaining para exibir os limites de Chamadas, consulte em nosso [Wiki/Definições Gerais](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/#headers) os Headers disponíveis.
 ```csharp   
  //Using specific headers(.NET 4.0)
