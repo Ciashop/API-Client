@@ -2,6 +2,7 @@
 ==========
 Este projeto contém uma biblioteca para ajudar desenvolvedores na plataforma .Net criarem aplicações integradas à plataforma de lojas virtuais Ciashop Framework. São cobertos os processos de Autenticação e Acesso aos recursos disponibilizados em nossa API.
 Para compreender melhor o processo de Autenticação e como deve ser feito as chamados aos métodos, recomendamos que leia a documentação disponível em nosso [Wiki] (http://wiki.ciashop.com.br/desenvolvedores/apis).
+Atualmente o Client está desenvolvido somente em C#, mas isso não impede que seja consumida por linguagens que sejam compatíveis com Json. Pretendemos desenvolver nosso APICLient em outras linguagens no futuro, caso tenha interesse em traduzi-lo para outras linguagens entre em contato conosco e vincularemos com nossa documentação.
 Se você é desenvolvedor em outra linguagem ou plataforma, consulte também nosso Wiki para ter informações sobre como utilizar nossa API sem um client.
 
 
@@ -11,7 +12,7 @@ Ciashop
 ##Requisitos
 * .Net 4.0
 * Visual Studio 2010
-* Chaves(ClientID e SecretKey)fornecidas pela Ciashop
+* Chaves (ClientID e SecretKey) fornecidas pela Ciashop, através da nossa equipe de [Suporte](http://www.ciashop.com.br/contato/).
 
 ##Instalação
 Faça o download do código fonte e acrescente ao projeto da sua solução.
@@ -52,7 +53,7 @@ Após utilizar a classe APIAuthorizer e obter a autorização, já poderá reali
 Você pode utilizar a classe APIClient para execução dos métodos GET, PUT, POST e DELETE.
 
 ###Usando a classe APIClient
-Get de todos os departamentos.
+Listar todos os departamentos.
   
 ```csharp
  //Get all Departments from the API. (.NET 4.0)
@@ -67,7 +68,7 @@ foreach(var product in response.Content)
 	Console.Write(product.title);
 }
 ```
-Post de um Departamento.
+Criar um novo Departamento.
 ```csharp   
    //Post Departments. (.NET 4.0)
 
@@ -86,7 +87,7 @@ var response = objClient.Post("departments", department);
 if(response.StatusCode == 200)
 	Console.Write("Success");
 ```
-Put de um Departamento.
+Atualizar um Departamento.
 ```csharp   
    //Put Departments. (.NET 4.0)
 
@@ -105,7 +106,7 @@ var response = objClient.Put("departments", department);
 if(response.StatusCode == 201)
 	Console.Write("Success");
 ```
-Delete de um Departamento.
+Deletar um Departamento.
 ```csharp   
   //Delete Departments (.NET 4.0)
 
