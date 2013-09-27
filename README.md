@@ -120,14 +120,24 @@ if(response.StatusCode == 200)
 ```
 Recuperar  Erros.
 
-Acesse nosso Wiki para visualizar os [Erros Gerais da API](http://wiki.ciashop.com.br/desenvolvedores/apis/erros-gerais-da-api/).
+O APIClient fornece uma lista com todos os erro que podem ter ocorrido durante o consuma de um recurso. Com o exemplo abaixo é possivel identificar os erros que estão ocorrendo.
+Para mais informações acesse o [Wiki/Erros Gerais](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/erros/).
 ```csharp   
- APIClient objClient = new APIClient(authState);
+APIClient objClient = new APIClient(authState);
 
 var response = objClient.Get("/departments/Test");
 
 if(response.StatusCode != 200 && response.Error.Message)
-	Console.Write("Error description: " + response.Error.Message);
+{
+       Console.Write("Error description: " + response.Error.Message);
+    
+    foreach (var itemError in response.Error.ErrorDetails)
+    {
+        Console.Write("Error code: " + itemError.Code );
+        Console.Write("Error messagem: " + itemError.Message );
+        Console.Write("More info: " + itemError.MoreInfo );
+    }
+}
 ```
 Usar Headers.
 
