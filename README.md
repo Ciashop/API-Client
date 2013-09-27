@@ -120,8 +120,7 @@ if(response.StatusCode == 200)
 ```
 Recuperar  Erros.
 
-O APIClient fornece uma lista com todos os erro que podem ter ocorrido durante o consumo de um recurso. Com o exemplo abaixo é possivel identificar os erros que estão ocorrendo.
-Para mais informações acesse o [Wiki/Erros Gerais](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/erros/).
+O APIClient já realiza o tratamento dos erros e fornece uma lista com todos os erro que podem ter ocorrido durante o consumo de um recurso.
 ```csharp   
 APIClient objClient = new APIClient(authState);
 
