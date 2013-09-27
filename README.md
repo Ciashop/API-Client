@@ -120,7 +120,7 @@ if(response.StatusCode == 200)
 ```
 Recuperar  Erros.
 
-O APIClient fornece uma lista com todos os erro que podem ter ocorrido durante o consuma de um recurso. Com o exemplo abaixo é possivel identificar os erros que estão ocorrendo.
+O APIClient fornece uma lista com todos os erro que podem ter ocorrido durante o consumo de um recurso. Com o exemplo abaixo é possivel identificar os erros que estão ocorrendo.
 Para mais informações acesse o [Wiki/Erros Gerais](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/erros/).
 ```csharp   
 APIClient objClient = new APIClient(authState);
@@ -141,7 +141,14 @@ if(response.StatusCode != 200 && response.Error.Message)
 ```
 Usar Headers.
 
-O Exemplo abaixo utiliza o Header x-apilimit-remaining para exibir os limites de Chamadas, para sobre os Headers disponíveis consulte as [Definições Gerais da Api](http://wiki.ciashop.com.br/desenvolvedores/apis/definicoes-gerais/#headers).
+A API Ciashop possui alguns parâmetros próprios exibidos no cabeçalho HTTP, são eles:
+
+Content-Type = A API aceita e entrega somente o formato JSON.
+
+x-apilimit-remaining = Exibe o limite de requisições total por hora e a quantidade utilizada até o momento. Exemplo: 1000/42
+
+x-hasmore = Retorna “true” em uma requisição GET caso hajam mais registros a serem retornados.
+
 ```csharp   
  //Using specific headers(.NET 4.0)
 APIClient objClient = new APIClient(authState);
