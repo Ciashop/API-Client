@@ -55,7 +55,7 @@ Após utilizar a classe APIAuthorizer e obter a autorização, já poderá reali
 Você pode utilizar a classe APIClient para execução dos métodos GET, PUT, POST e DELETE.
 
 ###Usando a classe APIClient
-Listar todos os departamentos.
+Listar todos os departamentos (Get Departaments)
   
 ```csharp
  //Get all Departments from the API. (.NET 4.0)
@@ -70,7 +70,7 @@ foreach(var product in response.Content)
 	Console.Write(product.title);
 }
 ```
-Criar um novo Departamento.
+Criar um novo Departamento (Post Departments)
 ```csharp   
    //Post Departments. (.NET 4.0)
 
@@ -89,7 +89,7 @@ var response = objClient.Post("departments", department);
 if(response.StatusCode == 200)
 	Console.Write("Success");
 ```
-Atualizar um Departamento.
+Atualizar um Departamento (Put Departments)
 ```csharp   
    //Put Departments. (.NET 4.0)
 
@@ -108,7 +108,7 @@ var response = objClient.Put("departments", department);
 if(response.StatusCode == 201)
 	Console.Write("Success");
 ```
-Deletar um Departamento.
+Deletar um Departamento (Delete Departments)
 ```csharp   
   //Delete Departments (.NET 4.0)
 
