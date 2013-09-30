@@ -120,7 +120,7 @@ if(response.StatusCode == 200)
 ```
 Recuperar  Erros.
 
-O APIClient já realiza o tratamento dos erros e fornece uma lista com todos os erro que podem ter ocorrido durante o consumo de um recurso.
+O APIClient já realiza o tratamento dos erros e fornece uma lista com todos os erros que podem ter ocorrido durante o consumo de um recurso.
 ```csharp   
 APIClient objClient = new APIClient(authState);
 
@@ -144,7 +144,7 @@ A API Ciashop possui alguns parâmetros próprios exibidos no cabeçalho HTTP, s
 
 Content-Type = A API aceita e entrega somente o formato JSON.
 
-x-apilimit-remaining = Exibe o limite de requisições total por hora e a quantidade utilizada até o momento. Exemplo: 1000/42
+x-apilimit-remaining = Exibe o limite de requisições total por hora e a quantidade utilizada até o momento. Exemplo: 1000/42, abaixo possui um exemplo onde essa informação foi separada. ApliLimit retornaria 1000 e ApiLimitRemainig retornaria 42. 
 
 x-hasmore = Retorna “true” em uma requisição GET caso hajam mais registros a serem retornados.
 
