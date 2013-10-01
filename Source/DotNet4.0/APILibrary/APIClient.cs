@@ -101,10 +101,13 @@ namespace APILibrary
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", "Bearer " + this.State.AccessToken);
 
-            using (var writer = new StreamWriter(request.GetRequestStream()))
+            if (method == HttpMethods.POST && !string.IsNullOrEmpty(content))
             {
-                writer.Write(content);
-                writer.Close();
+                using (var writer = new StreamWriter(request.GetRequestStream()))
+                {
+                    writer.Write(content);
+                    writer.Close();
+                }
             }
 
             return GetResponse((HttpWebResponseWrapper)request.GetResponse());
