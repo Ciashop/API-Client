@@ -32,7 +32,7 @@ namespace APILibrary
                 throw new ArgumentNullException("storeUrl can't be a null string");
             if (storeUrl.Scheme.Equals("http", StringComparison.OrdinalIgnoreCase))
                 throw new ArgumentException("storeUrl must have https");
-            if (!(storeUrl.AbsolutePath.EndsWith("manager") || storeUrl.AbsolutePath.EndsWith("manager/")))
+            if (!(storeUrl.AbsolutePath.EndsWith("manager", StringComparison.OrdinalIgnoreCase) || storeUrl.AbsolutePath.EndsWith("manager/", StringComparison.OrdinalIgnoreCase)))
                 throw new ArgumentException("storeUrl must ends with manager");
 
             this._clientId = clientId;
