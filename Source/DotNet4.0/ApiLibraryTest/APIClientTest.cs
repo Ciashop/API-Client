@@ -104,6 +104,43 @@ namespace ApiLibraryTest
             mock.VerifySet(h => h.HttpWebRequest.Method = "POST");
             Assert.AreEqual(content, writedString);
         }
+
+        [TestMethod]
+        public void Call_with_HttpMethod_Put_must_write_content_on_request_body()
+        {
+            var content = "{" +
+                                "\"id\": \"1\"," +
+                                "\"name\": \"Department\"" +
+                            "}";
+
+            string writedString = string.Empty;
+            var mockMS = new Mock<MemoryStream>();
+            mockMS.Setup(m => m.CanWrite).Returns(true);
+            mockMS.Setup(m => m.Write(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>())).Callback(
+                (byte[] b, int i1, int i2) =>
+                {
+                    writedString = new System.Text.ASCIIEncoding().GetString(b, i1, i2);
+                });
+
+
+            var mock = new Mock<HttpHelper>("https://www.mystore.com/api/v1");
+            mock.SetupProperty(m => m.HttpWebRequest.Method);
+            mock.SetupProperty(m => m.HttpWebRequest.ContentType);
+            mock.SetupProperty(m => m.HttpWebRequest.Headers, new WebHeaderCollection());
+            mock.Setup(m => m.HttpWebRequest.GetRequestStream()).Returns(mockMS.Object);
+            mock.Setup(m => m.HttpWebRequest.GetResponse().GetResponseStream()).Returns(new MemoryStream());
+
+            APIClient target = new APIClient(new AuthState
+            {
+                AccessToken = "token",
+                ApiUrl = "https://www.mystore.com/api/v1"
+            });
+
+            target.Call(HttpMethods.PUT, "departments", content, mock.Object);
+
+            mock.VerifySet(h => h.HttpWebRequest.Method = "PUT");
+            Assert.AreEqual(content, writedString);
+        }
         #endregion
 
         #region GetResponse tests

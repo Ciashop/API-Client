@@ -101,7 +101,7 @@ namespace APILibrary
             request.ContentType = "application/json";
             request.Headers.Add("Authorization", "Bearer " + this.State.AccessToken);
 
-            if (method == HttpMethods.POST && !string.IsNullOrEmpty(content))
+            if ((method == HttpMethods.POST || method == HttpMethods.PUT) && !string.IsNullOrEmpty(content))
             {
                 using (var writer = new StreamWriter(request.GetRequestStream()))
                 {
